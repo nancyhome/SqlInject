@@ -29,11 +29,22 @@ export default {
     login (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$message({
-            type: 'success',
-            message: '登录成功'
+          axios.post('/login', {
+            user: this.formData.userName,
+            pass: this.formData.password
           })
-          this.$router.push({ name: 'home' })
+            .then((response) => {
+              if (response.status === 200) {
+                this.$message({
+                  message: '登陆成功',
+                  type: 'success'
+                })
+                this.$router.push({ name: 'home' })
+              }
+            })
+            .catch(function (error) {
+              console.log(error)
+            })
         } else {
           console.log('error submit!!')
           return false
